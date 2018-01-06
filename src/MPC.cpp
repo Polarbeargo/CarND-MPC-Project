@@ -21,6 +21,9 @@ double dt = 0.05;
 // This is the length from front to CoG that has a similar radius.
 const double Lf = 2.67;
 
+// Test up to 40 mph 
+double ref_v = 40;    // Test 40, 50, 60, 70
+
 // Define operator variables, solver takes all the state variables and actuator
 // variables in a singular vector.
 size_t x_start = 0;
@@ -170,6 +173,7 @@ vector<double> MPC::Solve(Eigen::VectorXd state, Eigen::VectorXd coeffs)
   double cte = state[4];
   double epsi = state[5];
   size_t n_vars = N * 6 + (N - 1) * 2;
+
   // TODO: Set the number of constraints
   size_t n_constraints = 0;
 
