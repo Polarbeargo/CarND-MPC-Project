@@ -131,9 +131,6 @@ int main()
             next_y_vals.push_back(ptsy[i]);
           }
 
-          //Eigen::VectorXd ptsxv = Eigen::VectorXd::Map(ptsx.data(), ptsx.size());
-          //Eigen::VectorXd ptsyv = Eigen::VectorXd::Map(ptsy.data(), ptsy.size());
-
           Eigen::VectorXd ptsx_(ptsx.size());
           Eigen::VectorXd ptsy_(ptsy.size());
 
@@ -145,10 +142,13 @@ int main()
 
           auto coeffs = polyfit(ptsx_, ptsy_, 3);
 
-          double cte = polyeval(coeffs, 0.0); // y=0
-          double epsi = -atan(coeffs[1]);     // x=0
+          // Y = 0
+          double cte = polyeval(coeffs, 0.0);
 
-          // state in car coordniates
+          // X = 0
+          double epsi = -atan(coeffs[1]);
+
+          // Car coordniates state vector
           Eigen::VectorXd state(6);
           state << 0.0, 0.0, 0.0, v, cte, epsi;
 
