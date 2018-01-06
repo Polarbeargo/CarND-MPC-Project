@@ -21,6 +21,17 @@ double dt = 0.05;
 // This is the length from front to CoG that has a similar radius.
 const double Lf = 2.67;
 
+// Define operator variables, solver takes all the state variables and actuator
+// variables in a singular vector.
+size_t x_start = 0;
+size_t y_start = x_start + N;
+size_t psi_start = y_start + N;
+size_t v_start = psi_start + N;
+size_t cte_start = v_start + N;
+size_t epsi_start = cte_start + N;
+size_t delta_start = epsi_start + N;
+size_t a_start = delta_start + N - 1;
+
 class FG_eval
 {
 public:
@@ -178,6 +189,9 @@ vector<double> MPC::Solve(Eigen::VectorXd state, Eigen::VectorXd coeffs)
     vars[i] = 0;
   }
 
+  Dvector vars_lowerbound(n_vars);
+  Dvector vars_upperbound(n_vars);
+
   /* Set lower and upper bounds on the variables. 
   * Here we set the range of values δ to [-25, 25] in radians:
   */
@@ -186,9 +200,6 @@ vector<double> MPC::Solve(Eigen::VectorXd state, Eigen::VectorXd coeffs)
     vars_lowerbound[i] = -0.436332;
     vars_upperbound[i] = 0.436332;
   }
-
-  Dvector vars_lowerbound(n_vars);
-  Dvector vars_upperbound(n_vars);
   // TODO: Set lower and upper limits for variables.
 
   // Lower and upper limits for the constraints
