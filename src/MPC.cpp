@@ -51,7 +51,6 @@ public:
       fg[0] += CppAD::pow(vars[epsi_start + t], 2);
       std::cout << "epsi cost " << fg[0] << std::endl;
       fg[0] += CppAD::pow(vars[v_start + t] - ref_v, 2);
-      std::cout << "speed cost " << limit << std::endl;
     }
 
     // Minimize the use of actuators.
@@ -153,6 +152,20 @@ vector<double> MPC::Solve(Eigen::VectorXd state, Eigen::VectorXd coeffs)
   // element vector and there are 10 timesteps. The number of variables is:
   //
   // 4 * 10 + 2 * 9
+  double x = x0[0];
+  double y = x0[1];
+  double psi = x0[2];
+  double v = x0[3];
+  double cte = x0[4];
+  double epsi = x0[5];
+
+  // Set the initial variable values
+  vars[x_start] = x;
+  vars[y_start] = y;
+  vars[psi_start] = psi;
+  vars[v_start] = v;
+  vars[cte_start] = cte;
+  vars[epsi_start] = epsi;
   size_t n_vars = 0;
   // TODO: Set the number of constraints
   size_t n_constraints = 0;
