@@ -60,9 +60,9 @@ public:
     // The part of the cost based on the reference state.
     for (int t = 0; t < N; t++)
     {
-      fg[0] += CppAD::pow(vars[cte_start + t], 2);
+      fg[0] += 1000 * CppAD::pow(vars[cte_start + t], 2);
       std::cout << "cte cost " << fg[0] << std::endl;
-      fg[0] += CppAD::pow(vars[epsi_start + t], 2);
+      fg[0] += 1000 * CppAD::pow(vars[epsi_start + t], 2);
       std::cout << "epsi cost " << fg[0] << std::endl;
       fg[0] += CppAD::pow(vars[v_start + t] - ref_v, 2);
     }
@@ -70,18 +70,18 @@ public:
     // Minimize the use of actuators.
     for (int t = 0; t < N - 1; t++)
     {
-      fg[0] += CppAD::pow(vars[delta_start + t], 2);
+      fg[0] += 50 * CppAD::pow(vars[delta_start + t], 2);
       std::cout << "steering cost " << fg[0] << std::endl;
-      fg[0] += CppAD::pow(vars[a_start + t], 2);
+      fg[0] += 50 * CppAD::pow(vars[a_start + t], 2);
       std::cout << "Throttle cost " << fg[0] << std::endl;
     }
 
     // Minimize the value gap between sequential actuations.
     for (int t = 0; t < N - 2; t++)
     {
-      fg[0] += CppAD::pow(vars[delta_start + t + 1] - vars[delta_start + t], 2);
+      fg[0] += 250000 * CppAD::pow(vars[delta_start + t + 1] - vars[delta_start + t], 2);
       std::cout << "steering rate cost " << fg[0] << std::endl;
-      fg[0] += CppAD::pow(vars[a_start + t + 1] - vars[a_start + t], 2);
+      fg[0] += 5000 * CppAD::pow(vars[a_start + t + 1] - vars[a_start + t], 2);
       std::cout << "Throttle rate cost " << fg[0] << std::endl;
     }
 
@@ -175,7 +175,7 @@ vector<double> MPC::Solve(Eigen::VectorXd state, Eigen::VectorXd coeffs)
   size_t n_vars = N * 6 + (N - 1) * 2;
 
   // TODO: Set the number of constraints
-  size_t n_constraints = 6;
+  size_t n_constraints = N * 6;
 
   // Initial value of the independent variables.
   // SHOULD BE 0 besides initial state.
