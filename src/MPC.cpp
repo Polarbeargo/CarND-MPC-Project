@@ -21,8 +21,8 @@ double dt = 0.05;
 // This is the length from front to CoG that has a similar radius.
 const double Lf = 2.67;
 
-// Test up to 40 mph 
-double ref_v = 40;    // Test 40, 50, 60, 70
+// Test up to 40 mph, test 40, 50, 60, 70
+double ref_v = 40;    
 
 // Define operator variables, solver takes all the state variables and actuator
 // variables in a singular vector.
@@ -158,7 +158,7 @@ MPC::~MPC() {}
 vector<double> MPC::Solve(Eigen::VectorXd state, Eigen::VectorXd coeffs)
 {
   bool ok = true;
-  size_t i;
+  
   typedef CPPAD_TESTVECTOR(double) Dvector;
 
   // TODO: Set the number of model variables (includes both states and inputs).
