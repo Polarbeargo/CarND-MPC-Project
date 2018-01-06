@@ -178,6 +178,15 @@ vector<double> MPC::Solve(Eigen::VectorXd state, Eigen::VectorXd coeffs)
     vars[i] = 0;
   }
 
+  /* Set lower and upper bounds on the variables. 
+  * Here we set the range of values δ to [-25, 25] in radians:
+  */
+  for (int i = delta_start; i < a_start; i++)
+  {
+    vars_lowerbound[i] = -0.436332;
+    vars_upperbound[i] = 0.436332;
+  }
+
   Dvector vars_lowerbound(n_vars);
   Dvector vars_upperbound(n_vars);
   // TODO: Set lower and upper limits for variables.
@@ -190,15 +199,6 @@ vector<double> MPC::Solve(Eigen::VectorXd state, Eigen::VectorXd coeffs)
   {
     constraints_lowerbound[i] = 0;
     constraints_upperbound[i] = 0;
-  }
-
-  /* Set lower and upper bounds on the variables. 
-  * Here we set the range of values δ to [-25, 25] in radians:
-  */
-  for (int i = delta_start; i < a_start; i++)
-  {
-    vars_lowerbound[i] = -0.436332;
-    vars_upperbound[i] = 0.436332;
   }
 
   // object that computes objective and constraints
