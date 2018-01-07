@@ -19,14 +19,14 @@ Transforming the waypoints to the vehicle's coordinates (see main.cpp lines 120-
 The state vector are below:
 - x: vehicle x global position
 - y: vehicle y global position
-- ?? (psi): vehicle's angle in radians from the x-direction (radians)
-- ?? : vehicle's velocity
-- ?? (delta): steering angle
+- psi: vehicle's angle in radians from the x-direction (radians)
+- v: vehicle's velocity
+- delta: steering angle
 - a : acceleration (throttle)
 
 ### Actuators
 
-- ?? (delta): steering angle
+- delta: steering angle
 - a : acceleration (throttle)
 
 ## Parameter Tuning & Latency
