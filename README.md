@@ -3,6 +3,42 @@ Self-Driving Car Engineer Nanodegree Program
 
 ---
 
+## Model
+
+In Model Predictive Controller(MPC) project, I implemented a kinematic model to control the vehicle around the track in Udacity's simulator.The simulator sends car telemetry information to the MPC via WebSocket and receives the steering angle and throttle. Kinematic models are simplifications of dynamic models that ignore tire forces, gravity, and mass. This simplification reduces the accuracy of the models, but it also makes them more tractable. At low and moderate speeds, kinematic models often approximate the actual vehicle dynamics. In this project, I am able to achieve the speed of 40 MPH. The model will optimize the actuators input to simulate the vehicle trajactory and minimize the cost like cross-track error. Model Predictive Controller(MPC) can predict the vehicle state into the future by the latency time and can take control actions accordingly. PID and LQR controllers do not have this predictive ability. The model combines the state and actuations from the previous timestep to calculate the state for the current timestep based on the equations below:
+
+![](./model.png)
+
+
+### Polynomial Fitting and MPC Preprocessing
+
+Transforming the waypoints to the vehicle's coordinates (see main.cpp lines 120-145) then a 3rd-order polynomial is fitted to the transformed waypoints. These polynomial coefficients are used to calculate the cte and epsi..etc., then used by the solver to create a reference trajectory.
+
+### State
+
+The state vector are below:
+- x: vehicle x global position
+- y: vehicle y global position
+- ?? (psi): vehicle's angle in radians from the x-direction (radians)
+- ?? : vehicle's velocity
+- ?? (delta): steering angle
+- a : acceleration (throttle)
+
+### Actuators
+
+- ?? (delta): steering angle
+- a : acceleration (throttle)
+
+## Parameter Tuning & Latency
+
+N and dt:   
+
+N is number of timestamp and dt is the delay time between each state. To compensate the actuator latency, the state values are calculated using the model and the delay interval(see main.cpp lines 148-170). If I set N to 100, the simulation would run much slower. This is because the solver would have to optimize 4 times as many control inputs. Ipopt, the solver, permutes the control input values until it finds the lowest cost. If I open up Ipopt and plot the x and y values as the solver mutates them, the plot would look like a worm moving around trying to fit the shape of the reference trajectory. After trying with N/dt from 25 / 0.05, 25/0.02, 6/0.15, I decided to fixed to 25 and 0.05 to have a better result tuning the other parameters overcome latency and fairly smooth drive behavior.
+
+## MPC Demo
+
+[![IMAGE ALT TEXT HERE](https://img.youtube.com/vi/txNjfJZ6gGM/0.jpg)](https://www.youtube.com/watch?v=txNjfJZ6gGM)
+
 ## Dependencies
 
 * cmake >= 3.5
